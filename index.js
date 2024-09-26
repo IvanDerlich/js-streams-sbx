@@ -1,12 +1,12 @@
 const { Writable } = require("stream");
 
 const outStream = new Writable({
-  highWaterMark: 20,
+  highWaterMark: 25,
   write(chunk, encoding, callback) {
     setTimeout(() => {
-      console.log("write in the outstream");
+      console.log("write in the outstream: ", chunk.toString());
       callback(); // This is crucial to signal the stream is ready for more data
-    }, 1000); // Simulate processing time
+    }, 10); // Simulate processing time
   },
 });
 
@@ -24,23 +24,24 @@ process.stdin.on("data", (chunk) => {
 
 async function main() {
   let i = 0;
+  const limit = 100;
 
-  while (i < 100) {
+  while (i < limit) {
     const chunk = Buffer.from(`Chunk ${i}`);
     console.log("Writing chunk:", chunk.toString());
     await new Promise((resolve) => setTimeout(resolve, 1));
     const canWrite = outStream.write(chunk); // Returns false when buffer is full
+    console.log(`Write result for chunk ${i}:`, canWrite);
     if (!canWrite) {
       console.log("Backpressure applied, waiting for drain...");
       await new Promise((resolve) => outStream.once("drain", resolve));
     }
-    console.log(`Write result for chunk ${i}:`, canWrite);
+
     i++;
-    if (i >= 1000) {
+    if (i >= limit) {
       outStream.end(); // Signal the end of the writing process
     }
   }
 }
 
 main();
-
