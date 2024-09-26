@@ -1,25 +1,3 @@
-<!-- # js-streams-sbx
-
-An excercise I did to understand streams
-In this case there's a consumer that generates data and there's consumer that outputs the data
-
-The idea was to throttle the consumer's capacity so that the producer creates a situation of backpressure and recovers from it.
-
-When the writable stream returns false on write the system creates a one and only event handler after the drain event so that it that resumes the writing
-
-## This helped me understand concepts like
-throttling
-backpressure
-producer-consumer pattern
-recovery
-backpressure handling
-
-## Applications
-
-Sending files or big chunks of data over the network
-Sending big files to many clients
-Mitigate denial of service attacks that exhausts the memory by throttlinng the capacity of the consumer  -->
-
 # JS Streams Exercise - Producer-Consumer Pattern with Backpressure Handling
 
 This repository showcases a practical implementation of Node.js streams, focusing on key concepts such as throttling, backpressure, and the producer-consumer pattern. The project simulates a scenario where a producer generates data faster than the consumer can process, highlighting the use of backpressure handling to manage this imbalance.
